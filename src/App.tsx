@@ -136,6 +136,7 @@ export default function App() {
     setImportOpen(false);
   };
   const checkHasEvents = (text: string) => {
+    if (!text.includes('BEGIN:VEVENT')) throw new Error('That calendar is empty: it has no events at all. Check the whole link was copied, or that the timetable has classes in it.');
     if (!parseIcs(text).length) throw new Error("That calendar doesn't have any timed events to show. All-day events (like holidays) aren't shown on the timetable.");
   };
   const importUrl = async (url: string) => {
