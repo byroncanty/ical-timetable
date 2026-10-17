@@ -57,11 +57,6 @@ If the site lives somewhere other than `https://byroncanty.github.io`, edit `ALL
 3. **Settings → Pages → Source:** choose **GitHub Actions**.
 4. Push to `main` (or run the workflow). The site goes live at `https://<username>.github.io/<repo>/`.
 
-## Use it on an iPhone
-
-Open the site in **Safari**, then tap **Share → Add to Home Screen**. It opens full-screen like an app and
-keeps the last calendar for offline use.
-
 ## Structure
 
 ```
