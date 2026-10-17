@@ -9,8 +9,8 @@ myTimetable), Google Calendar, Outlook or iCloud, or upload an `.ics` file.
   (Apple Maps on iPhone), or the online platform (Zoom, Teams, Meet, Canvas) with a Join/Open button.
 - **In person vs online:** green "In person" and purple "Online" badges on every event, with striped cards for
   online, plus a key whose categories you can toggle
-- **Week grid:** Monday through the last day the calendar uses, so a Mon–Thu uni week shows four columns and
-  weekends appear only when needed. Includes a "now" line and 12-hour AM/PM times.
+- **Week grid:** a Monday–Friday week with a "now" line and 12-hour AM/PM times. On weekends it opens on the
+  coming week.
 - **Typical week:** the whole calendar collapsed into one repeating week, with skipped-week badges
 - **Agenda:** a day-by-day list. Phones get one day at a time with swipe.
 - Repeating events (RRULE) with skipped (EXDATE) and moved (RECURRENCE-ID) occurrences, UTC and time-zoned times
@@ -71,7 +71,7 @@ src/lib/ical.ts              ical.js → events: repeat expansion, exceptions, t
 src/lib/delivery.ts          in person vs online, platform detection, join links, directions
 src/lib/parseSummary.ts      university titles ("ICTPRG430 …, LEC01") vs ordinary titles
 src/lib/rooms.ts             RMIT room codes → Building #57 · Level 6 · Room 002
-src/lib/weeks.ts             day columns, weeks, typical-week grouping, grid range
+src/lib/weeks.ts             Mon–Fri week, typical-week grouping, grid range
 src/lib/feed.ts              saved source, fetching via the Worker, local cache, offline fallback
 src/lib/sample.ts            sample timetable generated relative to today
 src/components/              ImportDialog, NextClass, WeekGrid, EventCard, Key, EventDrawer, AgendaView, Filters

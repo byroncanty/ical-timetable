@@ -3,7 +3,7 @@ import { detectDelivery, directionsUrl } from './delivery';
 import { calendarName, parseIcs } from './ical';
 import { parseSummary } from './parseSummary';
 import { sampleIcs } from './sample';
-import { lastDayOf } from './weeks';
+import { dayRange, inDays, LAST_DAY } from './weeks';
 
 // Tests run with TZ=Australia/Melbourne (vite.config.ts), like the app's audience.
 const NOW = new Date(2026, 9, 17, 12, 0); // Sat 17 Oct 2026
@@ -117,13 +117,11 @@ describe('in person vs online', () => {
   });
 });
 
-describe('day columns', () => {
-  it('shows Monday through the last day that has events', () => {
-    const mk = (weekday: number) => ({ weekday }) as Parameters<typeof lastDayOf>[0][number];
-    expect(lastDayOf([mk(1), mk(4)])).toBe(4);
-    expect(lastDayOf([mk(1)])).toBe(5);
-    expect(lastDayOf([mk(2), mk(6)])).toBe(6);
-    expect(lastDayOf([])).toBe(5);
+describe('week', () => {
+  it('is Monday to Friday', () => {
+    expect(dayRange(LAST_DAY)).toEqual([1, 2, 3, 4, 5]);
+    expect(inDays(5, LAST_DAY)).toBe(true);
+    expect(inDays(6, LAST_DAY)).toBe(false);
   });
 });
 
@@ -133,6 +131,5 @@ describe('sample calendar', () => {
     expect(events).toHaveLength(5 * 12 - 1);
     expect(events.filter((e) => e.mode === 'online')).toHaveLength(24);
     expect(new Set(events.map((e) => e.place))).toEqual(new Set(['Melbourne City campus', 'Zoom', 'Canvas', 'State Library Victoria, 328 Swanston St, Melbourne']));
-    expect(lastDayOf(events)).toBe(4);
   });
 });

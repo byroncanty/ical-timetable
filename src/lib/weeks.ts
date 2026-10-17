@@ -1,16 +1,8 @@
 import { addDaysKey, fmtKey, mondayOf, weeksBetween } from './time';
 import type { GridItem, TimetableEvent } from './types';
 
-/**
- * Last day column to show (1 = Mon … 7 = Sun): the latest weekday that has any event,
- * so a Monday–Thursday timetable shows four days and weekends appear only when used.
- * Very short spans (only Mon/Tue) widen to a normal Mon–Fri week.
- */
-export function lastDayOf(events: TimetableEvent[]): number {
-  if (!events.length) return 5;
-  const last = Math.max(...events.map((e) => e.weekday));
-  return last < 3 ? 5 : last;
-}
+/** The timetable is a Monday–Friday week (1 = Mon … 5 = Fri); weekend events aren't shown in the grid. */
+export const LAST_DAY = 5;
 
 export const dayRange = (lastDay: number) => Array.from({ length: lastDay }, (_, i) => i + 1);
 export const inDays = (weekday: number, lastDay: number) => weekday >= 1 && weekday <= lastDay;

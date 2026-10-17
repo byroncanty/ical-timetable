@@ -6,7 +6,7 @@ import { fmtTime, hourLabel, liveCountdown, minToLabel, timeRange } from './time
 import { layoutDay } from './layout';
 import { parseDescription, parseSummary } from './parseSummary';
 import { parseRoom } from './rooms';
-import { gridRange, initialWeek, lastDayOf, termInfo, typicalWeek, weekLabel } from './weeks';
+import { gridRange, initialWeek, LAST_DAY, termInfo, typicalWeek, weekLabel } from './weeks';
 
 const feed = readFileSync(new URL('./__fixtures__/feed.ics', import.meta.url), 'utf8');
 const events = parseIcs(feed);
@@ -126,7 +126,7 @@ describe('weeks', () => {
   });
 
   it('labels weeks Monday to Thursday', () => {
-    expect(lastDayOf(events)).toBe(4);
+    expect(weekLabel('2026-10-12', LAST_DAY)).toBe('12 – 16 Oct 2026');
     expect(weekLabel('2026-10-12', 4)).toBe('12 – 15 Oct 2026');
     expect(weekLabel('2026-09-28', 4)).toBe('28 Sep – 1 Oct 2026');
     expect(weekLabel('2026-10-12', 5)).toBe('12 – 16 Oct 2026');

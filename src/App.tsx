@@ -22,9 +22,9 @@ import {
   gridRange,
   inDays,
   inTerm,
+  LAST_DAY,
   initialWeek,
   isTermLike,
-  lastDayOf,
   teachingWeek,
   termInfo,
   toGridItem,
@@ -170,11 +170,11 @@ export default function App() {
   );
   const visible = useMemo(() => filtered.filter((e) => !hiddenModes.includes(e.mode)), [filtered, hiddenModes]);
   const term = useMemo(() => termInfo(events), [events]);
-  const lastDay = useMemo(() => lastDayOf(events), [events]);
+  const lastDay = LAST_DAY;
   const days = dayRange(lastDay);
   const range = useMemo(() => gridRange(events, lastDay), [events, lastDay]);
   const todayKey = dateKey(now);
-  // Once this week's last day has passed (e.g. Friday for a Mon–Thu timetable), "this week" means the coming one.
+  // On weekends, "this week" means the coming Monday–Friday.
   const thisWeek = inDays(isoWeekday(now), lastDay) ? mondayOf(todayKey) : addWeeksKey(mondayOf(todayKey), 1);
 
   // Pick the starting week once events arrive.
