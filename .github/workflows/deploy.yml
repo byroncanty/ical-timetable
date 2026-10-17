@@ -1,0 +1,50 @@
+name: Deploy to GitHub Pages
+
+# Builds the site and publishes it on every push to main.
+# VITE_PROXY_URL (a repository variable) is the Cloudflare Worker that fetches calendar links.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+      - run: npm test
+
+      - name: Build
+        env:
+          VITE_PROXY_URL: ${{ vars.VITE_PROXY_URL }}
+        run: |
+          if [ -z "$VITE_PROXY_URL" ]; then echo "::error::Set the VITE_PROXY_URL repository variable to the Worker URL"; exit 1; fi
+          npm run build
+
+      - uses: actions/configure-pages@v6
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+      - id: deployment
+        uses: actions/deploy-pages@v5

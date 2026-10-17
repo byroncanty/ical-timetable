@@ -1,0 +1,164 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+:root {
+  /* pixels per minute in the week grid */
+  --ppm: calc(64px / 60);
+  color-scheme: light;
+}
+.dark {
+  color-scheme: dark;
+}
+
+body {
+  @apply bg-zinc-50 text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100;
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm font-medium text-zinc-700 shadow-sm transition hover:bg-zinc-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800;
+  }
+  .btn-icon {
+    @apply inline-flex items-center justify-center rounded-lg border border-zinc-200 bg-white p-2 text-zinc-700 shadow-sm transition hover:bg-zinc-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 disabled:opacity-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800;
+  }
+  .btn-primary {
+    @apply inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500;
+  }
+}
+
+/* Unit colours come from a per-card hue (--h), so each unit gets a matching light and dark shade. */
+.unit-card {
+  background: oklch(0.955 0.035 var(--h));
+  color: oklch(0.3 0.08 var(--h));
+  border-color: oklch(0.6 0.15 var(--h));
+}
+.dark .unit-card {
+  background: oklch(0.3 0.06 var(--h));
+  color: oklch(0.95 0.03 var(--h));
+  border-color: oklch(0.72 0.14 var(--h));
+}
+.unit-card:hover {
+  background: oklch(0.93 0.05 var(--h));
+}
+.dark .unit-card:hover {
+  background: oklch(0.34 0.07 var(--h));
+}
+/* Online (Canvas) classes: striped, lighter fill and a dashed edge, so they read as a separate category. */
+.unit-card.is-online {
+  background: repeating-linear-gradient(135deg, oklch(0.985 0.012 var(--h)) 0 7px, oklch(0.955 0.03 var(--h)) 7px 14px);
+  border-left-style: dashed;
+}
+.dark .unit-card.is-online {
+  background: repeating-linear-gradient(135deg, oklch(0.24 0.03 var(--h)) 0 7px, oklch(0.29 0.05 var(--h)) 7px 14px);
+}
+.unit-card.is-online:hover {
+  background: repeating-linear-gradient(135deg, oklch(0.97 0.02 var(--h)) 0 7px, oklch(0.935 0.04 var(--h)) 7px 14px);
+}
+.dark .unit-card.is-online:hover {
+  background: repeating-linear-gradient(135deg, oklch(0.27 0.04 var(--h)) 0 7px, oklch(0.32 0.06 var(--h)) 7px 14px);
+}
+
+/* Neutral samples for the key. */
+.key-swatch {
+  --h: 260;
+  background: oklch(0.93 0.01 var(--h));
+  border-left: 4px solid oklch(0.55 0.02 var(--h));
+}
+.dark .key-swatch {
+  background: oklch(0.34 0.01 var(--h));
+  border-left-color: oklch(0.75 0.02 var(--h));
+}
+.key-swatch.is-online {
+  background: repeating-linear-gradient(135deg, oklch(0.98 0.005 var(--h)) 0 4px, oklch(0.9 0.012 var(--h)) 4px 8px);
+  border-left-style: dashed;
+}
+.dark .key-swatch.is-online {
+  background: repeating-linear-gradient(135deg, oklch(0.26 0.005 var(--h)) 0 4px, oklch(0.36 0.012 var(--h)) 4px 8px);
+}
+
+.unit-dot {
+  background: oklch(0.62 0.15 var(--h));
+}
+.unit-band {
+  background: linear-gradient(135deg, oklch(0.6 0.15 var(--h)), oklch(0.5 0.16 calc(var(--h) + 30)));
+}
+
+/* Activity pills: Lecture solid, Tutorial outlined, Practical dashed. */
+.pill {
+  @apply inline-flex items-center rounded-full px-1.5 text-[10px] leading-4 font-semibold tracking-wide;
+  border: 1px solid transparent;
+}
+.pill-LEC {
+  background: oklch(0.5 0.15 var(--h));
+  color: white;
+}
+.dark .pill-LEC {
+  background: oklch(0.75 0.13 var(--h));
+  color: oklch(0.2 0.05 var(--h));
+}
+.pill-TUT {
+  border-color: currentColor;
+}
+.pill-PRA {
+  border: 1px dashed currentColor;
+  background: color-mix(in oklch, currentColor 10%, transparent);
+}
+
+@keyframes week-in {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--dir, 1) * 12px));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.animate-week-in {
+  animation: week-in 220ms ease-out;
+}
+@keyframes drawer-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+.animate-drawer-in {
+  animation: drawer-in 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-week-in,
+  .animate-drawer-in {
+    animation: none;
+  }
+}
+
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 10mm;
+  }
+  :root {
+    --ppm: 0.82px;
+  }
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: white !important;
+  }
+  .print-flat {
+    box-shadow: none !important;
+  }
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
